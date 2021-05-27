@@ -8,7 +8,6 @@ package automaticopener;
 import java.awt.Desktop;
 import java.net.URI;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,8 +16,6 @@ import java.util.logging.Logger;
  * @author Genus
  */
 public class LiveClassFrame extends javax.swing.JFrame {
-
-    private String beforeClick;
 
     /**
      * Creates new form LiveClassOpener
@@ -40,7 +37,7 @@ public class LiveClassFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTextField1.setText("Enter code");
@@ -107,12 +104,13 @@ public class LiveClassFrame extends javax.swing.JFrame {
         String s = jTextField1.getText();
 
         //getting now time
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
         java.time.LocalTime now = java.time.LocalTime.now();
         String tNow = dtf.format(now);
         int tNowH = Integer.parseInt(tNow.substring(0, 2));
         int tNowM = Integer.parseInt(tNow.substring(3, 5));
-        int tNowT = (60 * tNowH + tNowM) * 60 * 1000;
+        int tNowS = Integer.parseInt(tNow.substring(6, 8));
+        int tNowT = (60 * tNowH + tNowM) * 60 + tNowS;
         //done
 
         //getting required time
@@ -120,16 +118,20 @@ public class LiveClassFrame extends javax.swing.JFrame {
         if (tReq.indexOf(':') == 1) {
             tReq = "0" + tReq;
         }
+        if (tReq.lastIndexOf(':') == 2) {
+            tReq = tReq + ":00";
+        }
         int tReqH = Integer.parseInt(tReq.substring(0, 2));
         int tReqM = Integer.parseInt(tReq.substring(3, 5));
+        int tReqS = Integer.parseInt(tReq.substring(6, 8));
         tReqH += 12;
-        int tReqT = (60 * tReqH + tReqM) * 60 * 1000;
+        int tReqT = (60 * tReqH + tReqM) * 60 + tReqS;
         //done
 
         System.out.println("tReq " + tReqH + ":" + tReqM + ", tNow " + tNowH + ":" + tNowM);
         try {
-            System.out.println("Wait");
-            Thread.sleep(Math.abs(tReqT - tNowT));
+            System.out.println("Wait for " + (tReqT - tNowT) + " seconds");
+            Thread.sleep(Math.abs(tReqT - tNowT) * 1000);
             System.out.println("Done");
         } catch (InterruptedException ex) {
             Logger.getLogger(LiveClassFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,8 +139,7 @@ public class LiveClassFrame extends javax.swing.JFrame {
         try {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(new URI("https://session.vedantu.com/session/" + s + "/live"));
-                LiveClassFrame frame = new LiveClassFrame();
-                frame.setVisible(false);
+                this.dispose();
             }
         } catch (Exception e) {
             System.out.print(e);
@@ -148,7 +149,7 @@ public class LiveClassFrame extends javax.swing.JFrame {
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
         // TODO add your handling code here:
         if (jTextField1.getText().equals("Enter code"))
-            jTextField1.setText("");
+            jTextField1.setText("605dd9bdf6cb4114cfe8f5fa");
     }//GEN-LAST:event_jTextField1FocusGained
 
     private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained

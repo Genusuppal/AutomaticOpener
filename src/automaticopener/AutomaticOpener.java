@@ -19,5 +19,9 @@ public class AutomaticOpener {
         MainFrame frame = new MainFrame();
         frame.setVisible(true);
     }
-    
+
+    public static void openLiveClassFrame() {
+        LiveClassFrame frame = new LiveClassFrame();
+        frame.setVisible(true);
+    }
 }
