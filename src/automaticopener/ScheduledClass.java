@@ -7,20 +7,25 @@ package automaticopener;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Genus
  */
-public class LiveClassFrame extends javax.swing.JFrame {
-    LiveClassFrame LCF = this;
+public class ScheduledClass extends javax.swing.JFrame {
+
     /**
      * Creates new form LiveClassOpener
      */
-    public LiveClassFrame() {
+    public ScheduledClass() {
         initComponents();
     }
 
@@ -88,7 +93,7 @@ public class LiveClassFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(38, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -101,19 +106,16 @@ public class LiveClassFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        DateTimeFormatter dtfE = DateTimeFormatter.ofPattern("E");
-        DateTimeFormatter dtfM = DateTimeFormatter.ofPattern("MMM");
-        DateTimeFormatter dtfd = DateTimeFormatter.ofPattern("dd");
-        DateTimeFormatter dtfy = DateTimeFormatter.ofPattern("yyyy");
-        SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd HH:mm:ss yyyy");
+        String s = jTextField1.getText();
 
-        //getting now date
-        java.time.LocalDateTime now = java.time.LocalDateTime.now();
-        String dNowE = dtfE.format(now);
-        String dNowM = dtfM.format(now);
-        String dNowd = dtfd.format(now);
-        String dNowy = dtfy.format(now);
+        //getting now time
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+        java.time.LocalTime now = java.time.LocalTime.now();
+        String tNow = dtf.format(now);
+        int tNowH = Integer.parseInt(tNow.substring(0, 2));
+        int tNowM = Integer.parseInt(tNow.substring(3, 5));
+        int tNowS = Integer.parseInt(tNow.substring(6, 8));
+        int tNowT = (60 * tNowH + tNowM) * 60 + tNowS;
         //done
 
         //getting required time
@@ -125,61 +127,52 @@ public class LiveClassFrame extends javax.swing.JFrame {
             tReq = tReq + ":00";
         }
         int tReqH = Integer.parseInt(tReq.substring(0, 2));
+        int tReqM = Integer.parseInt(tReq.substring(3, 5));
+        int tReqS = Integer.parseInt(tReq.substring(6, 8));
         tReqH += 12;
-        tReq = tReqH + tReq.substring(2);
-        tReq = dNowE + " " + dNowM + " " + dNowd + " " + tReq + " " + dNowy;
+        int tReqT = (60 * tReqH + tReqM) * 60 + tReqS;
         //done
 
-        //scheduled task
-        Timer t = new Timer();
-        TimerTask tt = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                        String s = jTextField1.getText();
-                        Desktop.getDesktop().browse(new URI("https://session.vedantu.com/session/" + s + "/live"));
-                        LCF.dispose();
-                    }
-                } catch (Exception e) {
-                    System.out.print(e);
-                }
-            }
-        ;
-        };
-        //done
-
-        //setting timer
+        System.out.println("tReq " + tReqH + ":" + tReqM + ", tNow " + tNowH + ":" + tNowM);
         try {
-            t.schedule(tt, sdf.parse(tReq));
-        } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Wait for " + (tReqT - tNowT) + " seconds");
+            Thread.sleep(Math.abs(tReqT - tNowT) * 1000);
+            System.out.println("Done");
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LiveClassFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //done
+        try {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(new URI("https://session.vedantu.com/session/" + s + "/live"));
+                this.dispose();
+            }
+        } catch (Exception e) {
+            System.out.print(e);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusGained
         // TODO add your handling code here:
-        if (jTextField1.getText().equals("Enter code"))
-            jTextField1.setText("");
+        if (jTextField1.getText().equals("Enter code for 5:30 class"))
+            jTextField1.setText("605dd9bdf6cb4114cfe8f5fa");
     }//GEN-LAST:event_jTextField1FocusGained
 
     private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
         // TODO add your handling code here:
-        if (jTextField2.getText().equals("Enter time"))
-            jTextField2.setText("");
+        if (jTextField2.getText().equals("Enter code for 8:00 class"))
+            jTextField2.setText("605dd9bdf6cb4114cfe8f5f7");
     }//GEN-LAST:event_jTextField2FocusGained
 
     private void jTextField2FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusLost
         // TODO add your handling code here:
         if (jTextField2.getText().equals(""))
-            jTextField2.setText("Enter time");
+            jTextField2.setText("Enter code for 8:00 class");
     }//GEN-LAST:event_jTextField2FocusLost
 
     private void jTextField1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField1FocusLost
         // TODO add your handling code here:
         if (jTextField1.getText().equals(""))
-            jTextField1.setText("Enter code");
+            jTextField1.setText("Enter code for 5:30 class");
     }//GEN-LAST:event_jTextField1FocusLost
 
     /**
@@ -189,7 +182,7 @@ public class LiveClassFrame extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
