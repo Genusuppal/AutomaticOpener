@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
  */
 public class LiveClassFrame extends javax.swing.JFrame {
     LiveClassFrame LCF = this;
+    static String[] s = new String[0];
+    static int i = 0;
+    static int j = 0;
     /**
      * Creates new form LiveClassOpener
      */
@@ -168,13 +171,18 @@ public class LiveClassFrame extends javax.swing.JFrame {
         //done
 
         //scheduled task
+        String[] s2 = new String[i + 1];
+        System.arraycopy(s, 0, s2, 0, i);
+        s = s2;
+        s[i] = jTextField1.getText();
         Timer t = new Timer();
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
                 try {
                     if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                        String s = jTextField1.getText();
+                        String s = LCF.s[LCF.j];
+                        LCF.j++;
                         Desktop.getDesktop().browse(new URI("https://session.vedantu.com/session/" + s + "/live"));
                         LCF.dispose();
                     }
@@ -192,6 +200,7 @@ public class LiveClassFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println(e);
         }
+        i++;
         //done
     }//GEN-LAST:event_jButton1ActionPerformed
 
