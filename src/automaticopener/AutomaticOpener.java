@@ -5,6 +5,9 @@
  */
 package automaticopener;
 
+import java.awt.Desktop;
+import java.net.URI;
+
 /**
  *
  * @author Genus
@@ -18,6 +21,14 @@ public class AutomaticOpener {
         // TODO code application logic here
         MainFrame frame = new MainFrame();
         frame.setVisible(true);
+        try {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                Desktop.getDesktop().browse(new URI("https://www.vedantu.com/v/mycalendar"));
+            }
+            Runtime.getRuntime().exec("explorer.exe shell:appsFolder\\Microsoft.Whiteboard_8wekyb3d8bbwe!Whiteboard");
+        } catch (Exception e) {
+            System.out.print(e);
+        }
     }
 
     public static void openLiveClassFrame() {
