@@ -19,16 +19,7 @@ public class AutomaticOpener {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        MainFrame frame = new MainFrame();
-        frame.setVisible(true);
-        try {
-            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(new URI("https://www.vedantu.com/v/mycalendar"));
-            }
-            Runtime.getRuntime().exec("explorer.exe shell:appsFolder\\Microsoft.Whiteboard_8wekyb3d8bbwe!Whiteboard");
-        } catch (Exception e) {
-            System.out.print(e);
-        }
+        new MainFrame().setVisible(true);
     }
 
     public static void openLiveClassFrame() {
