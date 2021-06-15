@@ -201,7 +201,7 @@ public class MainFrame extends javax.swing.JFrame {
                 Desktop.getDesktop().browse(new URI("https://www.vedantu.com/v/mycalendar"));
             }
         } catch (Exception e) {
-            System.out.print(e);
+            System.out.print(e + "Checking things");
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
