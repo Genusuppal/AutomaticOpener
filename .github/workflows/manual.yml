@@ -5,4 +5,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get install ant
+      - run: cd build
       - run: ant build -v -buildfile build.xml
