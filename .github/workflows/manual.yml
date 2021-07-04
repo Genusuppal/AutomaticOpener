@@ -14,6 +14,7 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      - run: export DISPLAY=:0
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: sudo apt-get install ant
       - run: cd build
