@@ -18,4 +18,4 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - run: sudo apt-get install ant
       - run: cd build
-      - run: ant clean build -v -buildfile build.xml
+      - run: ant build -v -buildfile build.xml
