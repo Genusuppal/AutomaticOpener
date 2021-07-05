@@ -64,7 +64,7 @@ public class MainFrame extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
         jTextField1.setText("Enter code");
@@ -130,11 +130,6 @@ public class MainFrame extends javax.swing.JFrame {
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
-            }
-        });
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
             }
         });
 
@@ -205,8 +200,10 @@ public class MainFrame extends javax.swing.JFrame {
         String s = jTextField1.getText();
         try {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                if (!(choice.equals("slides"))
+                if (choice.equals("slides")) {
+                } else {
                     Desktop.getDesktop().browse(new URI("https://session.vedantu.com/session-" + choice + "-replay/" + s));
+                }
                 Desktop.getDesktop().browse(new URI("https://www.vedantu.com/v/otfSessionNotes/" + s));
             }
         } catch (Exception e) {
@@ -287,10 +284,6 @@ public class MainFrame extends javax.swing.JFrame {
             System.out.println(e);
         }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     /**
      * @param args the command line arguments
