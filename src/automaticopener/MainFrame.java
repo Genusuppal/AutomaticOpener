@@ -33,8 +33,11 @@ public class MainFrame extends javax.swing.JFrame {
             if (data.contains("data")) {
                 jComboBox1.setSelectedIndex(1);
             }
-            else {
+            else if (data.contains("native")) {
                 jComboBox1.setSelectedIndex(0);
+            }
+            else if (data.contains("slides")) {
+                jComboBox1.setSelectedIndex(2);
             }
         }
         catch (Exception e) {
@@ -123,7 +126,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Native - Old", "Data - New" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Native - Old", "Data - New", "Only Slides" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
@@ -193,13 +196,17 @@ public class MainFrame extends javax.swing.JFrame {
             case 1:
                 choice = "data";
                 break;
+            case 2:
+                choice = "slides";
+                break;
             default:
                 choice = "native";
         }
         String s = jTextField1.getText();
         try {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                Desktop.getDesktop().browse(new URI("https://session.vedantu.com/session-" + choice + "-replay/" + s));
+                if (!(choice.equals("slides"))
+                    Desktop.getDesktop().browse(new URI("https://session.vedantu.com/session-" + choice + "-replay/" + s));
                 Desktop.getDesktop().browse(new URI("https://www.vedantu.com/v/otfSessionNotes/" + s));
             }
         } catch (Exception e) {
@@ -266,6 +273,9 @@ public class MainFrame extends javax.swing.JFrame {
             {
                 case 1:
                    choice = "data";
+                   break;
+                case 2:
+                   choice = "slides";
                    break;
                 case 0:
                 default:
