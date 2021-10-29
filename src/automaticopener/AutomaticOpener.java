@@ -5,9 +5,6 @@
  */
 package automaticopener;
 
-import java.awt.Desktop;
-import java.net.URI;
-
 /**
  *
  * @author Genus
