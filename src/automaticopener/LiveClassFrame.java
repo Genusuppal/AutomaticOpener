@@ -175,7 +175,7 @@ public class LiveClassFrame extends javax.swing.JFrame {
         String[] s2 = new String[i + 1];
         System.arraycopy(s, 0, s2, 0, i);
         s = s2;
-        s[i] = jTextField1.getText().strip();
+        s[i] = jTextField1.getText().trim();
         Timer t = new Timer();
         TimerTask tt = new TimerTask() {
             @Override

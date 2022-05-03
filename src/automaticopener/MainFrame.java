@@ -197,7 +197,7 @@ public class MainFrame extends javax.swing.JFrame {
             default:
                 choice = "native";
         }
-        String s = jTextField1.getText().strip();
+        String s = jTextField1.getText().trim();
         try {
             if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 if (choice.equals("slides")) {
